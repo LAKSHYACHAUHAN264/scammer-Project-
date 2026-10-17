@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhishGuard — AI Email Phishing Detector</title>
+  <meta name="description" content="Detect phishing emails instantly using AI-powered analysis. Protect yourself from email scams and cyber threats with PhishGuard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-grid"></div>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <span class="logo-text">Phish<span class="logo-accent">Guard</span></span>
+      </div>
+      <nav class="nav">
+        <a href="#analyzer" class="nav-link active">Analyzer</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#stats" class="nav-link">Stats</a>
+      </nav>
+      <div class="status-badge">
+        <span class="status-dot" id="serverStatus"></span>
+        <span id="serverStatusText">Connecting...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+        AI-Powered Protection
+      </div>
+      <h1 class="hero-title">
+        Detect <span class="gradient-text">Phishing Emails</span><br/>Before They Harm You
+      </h1>
+      <p class="hero-sub">
+        Paste any suspicious email and our AI engine instantly analyzes it for phishing indicators, malicious URLs, social engineering tactics, and more.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="stat-num">98.7%</span><span class="stat-label">Accuracy</span></div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat"><span class="stat-num">50+</span><span class="stat-label">Indicators</span></div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat"><span class="stat-num">&lt;1s</span><span class="stat-label">Detection</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="email-card-preview">
+        <div class="ecp-header">
+          <div class="ecp-dots"><span></span><span></span><span></span></div>
+          <span class="ecp-title">Suspicious Email</span>
+        </div>
+        <div class="ecp-body">
+          <div class="ecp-line long"></div>
+          <div class="ecp-line medium"></div>
+          <div class="ecp-line short"></div>
+          <div class="ecp-url">http://payp4l-secure.xyz/verify</div>
+          <div class="ecp-warning">Phishing URL Detected</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Analyzer Section -->
+  <section class="analyzer-section" id="analyzer">
+    <div class="container">
+      <div class="section-header">
+        <h2>Email Analyzer</h2>
+        <p>Paste the full email content below — headers, body, links, everything.</p>
+      </div>
+
+      <div class="analyzer-grid">
+        <!-- Input Panel -->
+        <div class="panel input-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              Email Content
+            </div>
+            <div class="panel-actions">
+              <button class="btn-ghost" id="clearBtn" title="Clear">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              </button>
+              <button class="btn-ghost" id="pasteBtn" title="Paste from clipboard">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-meta">
+            <div class="meta-field">
+              <label for="senderEmail">Sender Email</label>
+              <input type="email" id="senderEmail" placeholder="e.g. security@paypal.com" autocomplete="off" />
+            </div>
+            <div class="meta-field">
+              <label for="subjectLine">Subject Line</label>
+              <input type="text" id="subjectLine" placeholder="e.g. Urgent: Verify your account" autocomplete="off" />
+            </div>
+          </div>
+
+          <textarea
+            id="emailBody"
+            class="email-textarea"
+            placeholder="Paste the full email body here...&#10;&#10;Example:&#10;Dear Customer,&#10;Your account has been suspended due to suspicious activity.&#10;Click here immediately to restore access: http://payp4l-secure.xyz/verify&#10;Failure to do so will result in permanent account closure.&#10;&#10;— PayPal Security Team"
+            spellcheck="false"
+          ></textarea>
+
+          <div class="textarea-footer">
+            <span class="char-count" id="charCount">0 characters</span>
+            <div class="sample-buttons">
+              <button class="btn-sample" id="loadPhishing">Load Phishing Sample</button>
+              <button class="btn-sample safe" id="loadLegit">Load Legit Sample</button>
+            </div>
+          </div>
+
+          <button class="analyze-btn" id="analyzeBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <span>Analyze Email</span>
+            <div class="btn-ripple"></div>
+          </button>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="panel results-panel" id="resultsPanel">
+
+          <!-- Idle State -->
+          <div class="idle-state" id="idleState">
+            <div class="idle-icon">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h3>Ready to Analyze</h3>
+            <p>Paste an email on the left and click <strong>Analyze Email</strong> to get an instant threat assessment.</p>
+          </div>
+
+          <!-- Loading State -->
+          <div class="loading-state hidden" id="loadingState">
+            <div class="loading-scanner">
+              <div class="scanner-ring ring-1"></div>
+              <div class="scanner-ring ring-2"></div>
+              <div class="scanner-ring ring-3"></div>
+              <div class="scanner-core">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+            </div>
+            <p class="loading-text">Scanning email...</p>
+            <div class="loading-steps" id="loadingSteps">
+              <div class="load-step active" id="step1">Parsing email structure</div>
+              <div class="load-step" id="step2">Analyzing URLs</div>
+              <div class="load-step" id="step3">Applying AI model</div>
+              <div class="load-step" id="step4">Generating report</div>
+            </div>
+          </div>
+
+          <!-- Result State -->
+          <div class="result-state hidden" id="resultState">
+            <!-- Verdict Banner -->
+            <div class="verdict-banner" id="verdictBanner">
+              <div class="verdict-icon" id="verdictIcon"></div>
+              <div class="verdict-text">
+                <div class="verdict-label" id="verdictLabel">Analyzing...</div>
+                <div class="verdict-desc" id="verdictDesc"></div>
+              </div>
+              <div class="risk-score-circle" id="riskScoreCircle">
+                <svg viewBox="0 0 100 100" class="score-svg">
+                  <circle class="score-bg" cx="50" cy="50" r="40" />
+                  <circle class="score-fill" id="scoreArc" cx="50" cy="50" r="40" />
+                </svg>
+                <div class="score-number" id="scoreNumber">0</div>
+              </div>
+            </div>
+
+            <!-- Risk Breakdown -->
+            <div class="breakdown-section">
+              <h4 class="section-title">Risk Breakdown</h4>
+              <div class="breakdown-bars" id="breakdownBars"></div>
+            </div>
+
+            <!-- Indicators -->
+            <div class="indicators-section">
+              <h4 class="section-title">Detected Indicators</h4>
+              <div class="indicators-list" id="indicatorsList"></div>
+            </div>
+
+            <!-- URL Analysis -->
+            <div class="urls-section" id="urlsSection">
+              <h4 class="section-title">URL Analysis</h4>
+              <div class="urls-list" id="urlsList"></div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="recommendations-section">
+              <h4 class="section-title">Recommendations</h4>
+              <div class="recommendations-list" id="recommendationsList"></div>
+            </div>
+
+            <button class="btn-reanalyze" id="reanalyzeBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+              </svg>
+              Analyze Another Email
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Our multi-layer analysis pipeline catches threats that humans miss.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon">&#128269;</div>
+          <h3>Email Parsing</h3>
+          <p>We extract metadata, sender info, subject, body text, and all embedded URLs from the email.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon">&#127760;</div>
+          <h3>URL Analysis</h3>
+          <p>Every URL is checked for domain spoofing, typosquatting, suspicious TLDs, and deceptive patterns.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon">&#129504;</div>
+          <h3>AI Heuristics</h3>
+          <p>Natural language analysis detects urgency tactics, impersonation, threats, and social engineering.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-icon">&#128202;</div>
+          <h3>Risk Scoring</h3>
+          <p>A weighted risk score from 0 to 100 is computed and a threat verdict is generated with recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section" id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">&#128737;</div>
+          <div class="stat-value-wrap"><div class="stat-value" data-target="98.7">0</div><div class="stat-suffix">%</div></div>
+          <div class="stat-name">Detection Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">&#9889;</div>
+          <div class="stat-value-wrap"><div class="stat-value" data-target="850">0</div><div class="stat-suffix">ms</div></div>
+          <div class="stat-name">Avg Response Time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">&#128270;</div>
+          <div class="stat-value-wrap"><div class="stat-value" data-target="50">0</div><div class="stat-suffix">+</div></div>
+          <div class="stat-name">Threat Indicators</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">&#127760;</div>
+          <div class="stat-value-wrap"><div class="stat-value" data-target="99">0</div><div class="stat-suffix">%</div></div>
+          <div class="stat-name">Uptime</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="logo">
+        <div class="logo-icon small">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Phish<span class="logo-accent">Guard</span></span>
+      </div>
+      <p class="footer-text">Built with FastAPI + Python &middot; AI Phishing Detection &middot; Educational Project</p>
+      <p class="footer-copy">&copy; 2026 PhishGuard. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
