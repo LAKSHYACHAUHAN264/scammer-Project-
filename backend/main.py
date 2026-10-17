@@ -5,12 +5,14 @@ Email Phishing Detection Engine
 Run with:  uvicorn main:app --reload --port 8000
 """
 
+import os
 import re
 import math
 from urllib.parse import urlparse
 from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 # ─────────────────────────────────────────────────────────────
@@ -546,6 +548,32 @@ def get_verdict(score: int) -> str:
 # ─────────────────────────────────────────────────────────────
 #  Routes
 # ─────────────────────────────────────────────────────────────
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+@app.get("/")
+def serve_index():
+    """Serve main web UI."""
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"status": "ok", "message": "PhishGuard API is running. Visit /docs for API documentation."}
+
+@app.get("/style.css")
+def serve_css():
+    """Serve CSS stylesheet."""
+    css_path = os.path.join(FRONTEND_DIR, "style.css")
+    if os.path.exists(css_path):
+        return FileResponse(css_path, media_type="text/css")
+    raise HTTPException(status_code=404, detail="style.css not found")
+
+@app.get("/app.js")
+def serve_js():
+    """Serve frontend JavaScript."""
+    js_path = os.path.join(FRONTEND_DIR, "app.js")
+    if os.path.exists(js_path):
+        return FileResponse(js_path, media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="app.js not found")
+
 @app.get("/health")
 def health():
     """Health check endpoint."""

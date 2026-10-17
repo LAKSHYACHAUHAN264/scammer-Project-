@@ -3,7 +3,10 @@
    Communicates with FastAPI backend
    ========================================== */
 
-const API_BASE = 'http://localhost:8000';
+// Automatically detect API host: relative path on Render/web, or localhost:8000 when opened via file://
+const API_BASE = (window.location.protocol === 'file:')
+  ? 'http://localhost:8000'
+  : '';
 
 // ── DOM References ──────────────────────────────────────────
 const analyzeBtn     = document.getElementById('analyzeBtn');
